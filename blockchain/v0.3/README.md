@@ -1,5 +1,5 @@
 # 0x03. Blockchain - Transactions
-* The UTXO Model
+
 ## General
 How to build a transaction
 What is a transaction input
@@ -9,42 +9,10 @@ How to compute the balance of given wallet
 What is a coinbase transaction and why it is used
 How to ensure immutability of a transaction
 What is the difference between the UTXO and the Account-based transaction models
-## Requirements
-# General
-* Allowed editors: vi, vim, emacs
-* All your files will be compiled on Ubuntu 14.04 LTS
-* Your C programs and functions will be compiled with gcc 4.8.4 using the flags -Wall -Werror -Wextra, -pedantic and the linker flags -lssl and -lcrypto
-* Your library libhblk_crypto.a, located in the crypto folder will be built and linked during correction
-* All your files should end with a new line
-* A README.md file, at the root of the folder of the project, is mandatory
-* Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
-* The prototypes of all your functions should be included in your header file called blockchain/v0.3/blockchain.h
-* All your header files should be include guarded
-
-# More Info
-## Prerequisites
-* Create the folder blockchain/v0.3/ and copy the following files in it:
-
-blockchain/v0.2/blockchain_create.c
-blockchain/v0.2/blockchain_deserialize.c
-blockchain/v0.2/blockchain_destroy.c
-blockchain/v0.2/blockchain.h
-blockchain/v0.2/blockchain_serialize.c
-blockchain/v0.2/block_create.c
-blockchain/v0.2/block_destroy.c
-blockchain/v0.2/block_hash.c
-blockchain/v0.2/block_is_valid.c
-* Modify your code so when a Blockchain is serialized, the version stored is 0.3
 
 ## Data structures
 Please refer to the concept page attached to this project. Don’t forget to update the Blockchain and Block data structures.
 
-## Additional information
-* Unless specified otherwise, you are allowed to use the C standard library
-* You are free to use any data structure that suits you as long as their purpose is well defined
-* You are free to print any information on stderr, this stream will be discarded during correction. Since you are going to use these utility functions in your Blockchain project, you are free to manage errors as you wish.
-* At the end of this project, the structure of your repository should look like this (you may have additional files):
-```
 holbertonschool-blockchain
 ├── blockchain
 │   ├── v0.1/
