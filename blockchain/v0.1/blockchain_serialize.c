@@ -1,45 +1,45 @@
 #include "blockchain.h"
 
 /**
- * blockchain_serialize - serializes a blockchain
- * @blockchain: pointer to the blockchain to be serialized
- * @path: path to the file to be created
- * if the file already exists, it will be overwritten
- * Return: 0 on success, -1 on failure
- **/
+ * blockchain_serialize - serializes blockchain to file
+ * @blockchain: pointer to blockchain to serialize
+ * @path: path to save file
+ * Return: 0 on success else -1 on failure
+ */
 int blockchain_serialize(blockchain_t const *blockchain, char const *path)
 {
-	FILE *file;
-	block_t *block;
-	hblk_file_t hblk_file;
-	int i;
+	int fd, i, size;
+	uint8_t endianness = _get_endianness();
 
-	if (!blockchain || !path)
+	if (!blockchain || !blockchain->chain || !path)
 		return (-1);
-
-	memcpy(hblk_file.hblk_magic, HBLK_MAGIC, 4);
-	memcpy(hblk_file.hblk_version, HBLK_VERSION, 3);
-	hblk_file.hblk_endian = _get_endianness();
-	hblk_file.hblk_blocks = llist_size(blockchain->chain);
-
-	file = fopen(path, "wb");
-	if (!file)
+	size = llist_size(blockchain->chain);
+	fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+	if (fd == -1)
 		return (-1);
-
-	fwrite(&hblk_file, sizeof(hblk_file), 1, file);
-	for (i = 0; i < hblk_file.hblk_blocks; i++)
+	if (write(fd, HBLK_MAGIC, strlen(HBLK_MAGIC)) != strlen(HBLK_MAGIC))
+		return (close(fd), -1);
+	if (write(fd, HBLK_VERSION, strlen(HBLK_VERSION)) != strlen(HBLK_VERSION))
+		return (close(fd), -1);
+	if (write(fd, &endianness, 1) != 1)
+		return (close(fd), -1);
+	if (write(fd, &size, 4) != 4)
+		return (close(fd), -1);
+	for (i = 0; i < size; i++)
 	{
-		block = llist_get_node_at(blockchain->chain, i);
+		block_t *block = llist_get_node_at(blockchain->chain, i);
+
 		if (!block)
-		{
-			fclose(file);
-			return (-1);
-		}
-		fwrite((void *)&block->info, sizeof(block->info), 1, file);
-		fwrite((void *)&block->data.len, sizeof(block->data.len), 1, file);
-		fwrite((void *)block->data.buffer, block->data.len + 1, 1, file);
-		fwrite((void *)block->hash, SHA256_DIGEST_LENGTH, 1, file);
+			return (close(fd), -1);
+		if (write(fd, &(block->info), sizeof(block->info)) != sizeof(block->info))
+			return (close(fd), -1);
+		if (write(fd, &(block->data.len), 4) != 4)
+			return (close(fd), -1);
+		if (write(fd, block->data.buffer, block->data.len) != block->data.len)
+			return (close(fd), -1);
+		if (write(fd, block->hash, SHA256_DIGEST_LENGTH) !=
+			SHA256_DIGEST_LENGTH)
+			return (close(fd), -1);
 	}
-	fclose(file);
-	return (0);
+	return (close(fd), 0);
 }

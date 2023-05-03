@@ -1,33 +1,29 @@
 #include "blockchain.h"
 
 /**
- * block_is_valid - checks if a block is valid
- * @block: pointer to the block to be checked
- * @prev_block: pointer to the previous block
- * to be validated block should
- * not be NULL
- * prev block should be NULL only if it is the first block
- * computed hash should be the same as the hash of the block
- * Return: 0 if the block is valid, -1 otherwise
+ * block_is_valid - checks if this and previous block are valid
+ * @block: pointer to this block in the chain
+ * @prev_block: pointer to previous block in the chain or NULL
+ * Return: 0 if valid else 1 if invalid
  */
 int block_is_valid(block_t const *block, block_t const *prev_block)
 {
-	block_t const tmp = GEN_BLOCK;
-	uint8_t hash[SHA256_DIGEST_LENGTH] = {0};
+	uint8_t hash_buf[SHA256_DIGEST_LENGTH] = {0};
+	block_t const _genesis = GENESIS_BLOCK;
 
 	if (!block || (!prev_block && block->info.index != 0))
 		return (1);
 	if (block->info.index == 0)
-		return (memcmp(block, &tmp, sizeof(tmp)));
+		return (memcmp(block, &_genesis, sizeof(_genesis)));
 	if (block->info.index != prev_block->info.index + 1)
 		return (1);
-	if (!block_hash(prev_block, hash) ||
-		memcmp(hash, prev_block->hash, SHA256_DIGEST_LENGTH))
+	if (!block_hash(prev_block, hash_buf) ||
+		memcmp(hash_buf, prev_block->hash, SHA256_DIGEST_LENGTH))
 		return (1);
 	if (memcmp(prev_block->hash, block->info.prev_hash, SHA256_DIGEST_LENGTH))
 		return (1);
-	if (!block_hash(block, hash) ||
-		memcmp(hash, block->hash, SHA256_DIGEST_LENGTH))
+	if (!block_hash(block, hash_buf) ||
+		memcmp(hash_buf, block->hash, SHA256_DIGEST_LENGTH))
 		return (1);
 	if (block->data.len > BLOCKCHAIN_DATA_MAX)
 		return (1);

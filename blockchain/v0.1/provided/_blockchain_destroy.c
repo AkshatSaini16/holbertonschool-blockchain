@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "blockchain.h"
+#include "../blockchain.h"
 
 /**
  * _blockchain_destroy - Deallocates a Blockchain structure

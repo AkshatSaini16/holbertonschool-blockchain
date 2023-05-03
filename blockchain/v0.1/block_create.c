@@ -2,7 +2,7 @@
 
 /**
  * block_create - creates a new block in the sequence
- * @prev: pointer to previous block with
+ * @prev: pointer to previous block
  * @data: pointer of data to duplicate
  * @data_len: length of data
  * Return: pointer to new block or NULL
