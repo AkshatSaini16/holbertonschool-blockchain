@@ -21,7 +21,5 @@ uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 		return (NULL);
 	len = EC_POINT_point2oct(group, point,
 			POINT_CONVERSION_UNCOMPRESSED, pub, EC_PUB_LEN, NULL);
-	if (len != EC_PUB_LEN)
-		return (NULL);
 	return (pub);
 }
