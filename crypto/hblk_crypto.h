@@ -15,8 +15,6 @@
 
 #define EC_PUB_LEN 65
 #define EC_CURVE NID_secp256k1
-#define PRI_FILENAME   "key.pem"
-#define PUB_FILENAME   "key_pub.pem"
 
 
 /**
@@ -42,5 +40,3 @@ uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg,
 		size_t msglen, sig_t *sig);
 int ec_verify(EC_KEY const *key, uint8_t const *msg,
 		size_t msglen, sig_t const *sig);
-
-#endif
