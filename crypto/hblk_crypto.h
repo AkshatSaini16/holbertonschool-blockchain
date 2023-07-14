@@ -17,7 +17,7 @@
 #define EC_CURVE NID_secp256k1
 
 /* Maximum signature octet string length (using 256-bit curve) */
-# define SIG_MAX_LEN    72
+#define SIG_MAX_LEN    72
 
 #define PRI_FILENAME   "key.pem"
 #define PUB_FILENAME   "key_pub.pem"
@@ -32,7 +32,7 @@
  */
 typedef struct sig_s
 {
-	uint8_t	sig[70];
+	uint8_t	sig[SIG_MAX_LEN];
 	uint8_t	len;
 } sig_t;
 
